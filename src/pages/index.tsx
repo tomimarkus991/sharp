@@ -2,6 +2,7 @@ import { SignInButton, SignOutButton, useUser } from "@clerk/nextjs";
 import { type NextPage } from "next";
 import Head from "next/head";
 
+import { RealButton } from "../components";
 import { api } from "../utils/api";
 
 const Home: NextPage = () => {
@@ -18,10 +19,12 @@ const Home: NextPage = () => {
       <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c]">
         {user.isSignedIn ? (
           <SignOutButton>
-            <div className="bg-red-500">test</div>
+            <RealButton>Sign out</RealButton>
           </SignOutButton>
         ) : (
-          <SignInButton />
+          <SignInButton>
+            <RealButton>Sign in</RealButton>
+          </SignInButton>
         )}
         {data?.map(post => (
           <div key={post.id}>
