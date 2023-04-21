@@ -16,7 +16,13 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c]">
-        {user.isSignedIn ? <SignOutButton /> : <SignInButton />}
+        {user.isSignedIn ? (
+          <SignOutButton>
+            <div className="bg-red-500">test</div>
+          </SignOutButton>
+        ) : (
+          <SignInButton />
+        )}
         {data?.map(post => (
           <div key={post.id}>
             <h1>{post.title}</h1>
