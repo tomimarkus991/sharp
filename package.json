@@ -8,7 +8,9 @@
     "postinstall": "prisma generate",
     "lint:fix": "eslint --fix --ext .js,.ts,.tsx ./src --ignore-path .gitignore",
     "lint": "next lint",
-    "start": "next start"
+    "start": "next start",
+    "prisma:push": "npx prisma db push",
+    "prisma:dev": "npx prisma studio"
   },
   "dependencies": {
     "@clerk/nextjs": "^4.16.4",
