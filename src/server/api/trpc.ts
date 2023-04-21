@@ -1,3 +1,4 @@
+/* eslint-disable import/order */
 /**
  * YOU PROBABLY DON'T NEED TO EDIT THIS FILE, UNLESS:
  * 1. You want to modify request context (see Part 1).
@@ -30,6 +31,7 @@ type CreateContextOptions = Record<string, never>;
  *
  * @see https://create.t3.gg/en/usage/trpc#-serverapitrpcts
  */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const createInnerTRPCContext = (_opts: CreateContextOptions) => {
   return {
     prisma,
@@ -42,6 +44,7 @@ const createInnerTRPCContext = (_opts: CreateContextOptions) => {
  *
  * @see https://trpc.io/docs/context
  */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const createTRPCContext = (_opts: CreateNextContextOptions) => {
   return createInnerTRPCContext({});
 };
@@ -64,8 +67,7 @@ const t = initTRPC.context<typeof createTRPCContext>().create({
       ...shape,
       data: {
         ...shape.data,
-        zodError:
-          error.cause instanceof ZodError ? error.cause.flatten() : null,
+        zodError: error.cause instanceof ZodError ? error.cause.flatten() : null,
       },
     };
   },
