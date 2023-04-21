@@ -1,3 +1,32 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+html, body {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+@later base {
+  p {
+    @apply text-[#f3f2f0];
+  }
+}
