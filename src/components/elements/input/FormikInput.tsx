@@ -3,7 +3,6 @@ import { VariantProps, cva } from "class-variance-authority";
 import { useField } from "formik";
 import { ReactNode, forwardRef } from "react";
 
-import { InputErrorText } from "@/components";
 import { cn } from "@/utils";
 
 const formikInputVariants = cva(["placeholder:text-stone-500 relative placeholder:text-base"], {
@@ -18,6 +17,7 @@ const formikInputVariants = cva(["placeholder:text-stone-500 relative placeholde
         hover:text-white`,
       blue: `bg-blue-700 text-[#f3f2f0] border-blue-900
         hover:text-white`,
+      ghost: `bg-transparent  text-[#f3f2f0] outline-none`,
     },
     // size is already defined on input element
     inputSize: {
@@ -56,7 +56,7 @@ export const FormikInput = forwardRef<HTMLInputElement, FormikInputProps>(
     },
     ref
   ) => {
-    const [field, { touched, error }] = useField(name);
+    const [field, { error }] = useField(name);
 
     return (
       <div>
@@ -95,7 +95,7 @@ export const FormikInput = forwardRef<HTMLInputElement, FormikInputProps>(
             </div>
           )}
         </div>
-        <InputErrorText className="mt-1 ml-1" touched={touched} error={error} />
+        {/* <InputErrorText className="mt-1 ml-1" touched={touched} error={error} /> */}
       </div>
     );
   }

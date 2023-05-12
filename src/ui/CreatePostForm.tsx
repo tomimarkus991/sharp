@@ -1,20 +1,18 @@
 import { useUser } from "@clerk/nextjs";
 import { Form, Formik } from "formik";
+import Image from "next/image";
 import { useState } from "react";
 
 import { YupSchemas } from "@/app-constants";
-
-import { FormikInput, FormikTextareaInput } from "../components";
+import { FormikInput } from "@/components";
 
 interface FormValues {
   title: string;
-  content: string;
 }
 export const CreatePostForm = () => {
   const { user } = useUser();
   const [initialValues] = useState<FormValues>({
     title: "",
-    content: "",
   });
 
   if (!user) return null;
@@ -39,14 +37,22 @@ export const CreatePostForm = () => {
     >
       {() => {
         return (
-          <Form className="flex flex-row">
-            <div className="mr-2">
-              <img src={user?.profileImageUrl} className="w-8 h-8 rounded-full" />
-            </div>
-            <div>
-              <p className="mb-2 text-[#f3f2f0]">{user?.username}</p>
-              <FormikInput name="title" variant="dark" className="mb-2" />
-              <FormikTextareaInput name="content" variant="dark" />
+          <Form className="flex flex-col">
+            <div className="flex items-center justify-start mb-2">
+              <Image
+                alt="profile pic"
+                src={user?.profileImageUrl}
+                className="rounded-full"
+                width={50}
+                height={50}
+              />
+              <FormikInput
+                name="title"
+                variant="ghost"
+                placeholder="Type something!"
+                className="grow placeholder:text-[#d2d2d2]"
+              />
+              {/* <p className="mb-2 text-[#f3f2f0] font-semibold text-lg">{user?.username}</p> */}
             </div>
           </Form>
         );

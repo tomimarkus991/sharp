@@ -1,15 +1,52 @@
-import { SignInButton, SignOutButton, useUser } from "@clerk/nextjs";
+import { SignInButton, UserButton, useUser } from "@clerk/nextjs";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
 import { type NextPage } from "next";
 import Head from "next/head";
+import Image from "next/image";
 
 import { RealButton } from "@/components";
 import { CreatePostForm } from "@/ui/";
 
-import { api } from "../utils/api";
+import { RouterOutputs, api } from "../utils/api";
+
+type PostWithAuthor = RouterOutputs["posts"]["getAll"][number];
+
+dayjs.extend(relativeTime);
+
+const PostView = ({ author, post }: PostWithAuthor) => {
+  return (
+    <div className="bg-[#0C1222] text-white w-[30rem] p-4 rounded-2xl flex">
+      <Image
+        alt="profile pic"
+        src={author.profileImageUrl}
+        className="mr-2 rounded-full"
+        width={50}
+        height={50}
+      />
+      <div className="flex flex-col">
+        <div className="flex text-sm opacity-75">
+          <p className="mr-1">{`@${author.username}`}</p>
+          <p className="">{dayjs(post.createdAt).fromNow()}</p>
+        </div>
+
+        <h1 className="text-2xl">{post.title}</h1>
+      </div>
+    </div>
+  );
+};
 
 const Home: NextPage = () => {
   const user = useUser();
-  const { data } = api.posts.getAll.useQuery();
+  const { data, isLoading } = api.posts.getAll.useQuery();
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (!data) {
+    return <div>Something went wrong</div>;
+  }
 
   return (
     <>
@@ -19,26 +56,24 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="flex flex-col h-screen bg-slate-800">
-        <div className="flex items-start justify-center mt-2">
+        <div className="flex items-center justify-around max-w-5xl mx-auto mt-12">
+          <div className="mr-64">
+            <h1 className="text-4xl font-bold text-white">Sharp</h1>
+          </div>
           {user.isSignedIn ? (
-            <SignOutButton>
-              <RealButton size="sm">Sign out</RealButton>
-            </SignOutButton>
+            <UserButton />
           ) : (
             <SignInButton>
               <RealButton size="sm">Sign in</RealButton>
             </SignInButton>
           )}
         </div>
-        <div className="flex justify-center">
+        <div className="flex justify-center mt-12">
           <CreatePostForm />
         </div>
-        <div className="flex justify-center mt-12">
-          {data?.map(post => (
-            <div key={post.id} className="bg-[#0C1222] text-white w-[30rem] p-4 rounded-2xl">
-              <h1 className="text-2xl">{post.title}</h1>
-              <p className="text-lg">{post.content}</p>
-            </div>
+        <div className="flex flex-col items-center justify-center mt-12 space-y-2">
+          {data.map(fullPost => (
+            <PostView key={fullPost.post.id} {...fullPost} />
           ))}
         </div>
       </main>
