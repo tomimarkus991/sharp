@@ -65,6 +65,10 @@ module.exports = {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: 0 },
         },
+        "animate-spin": {
+          "0%": { transform: "rotate(0deg)" },
+          "100%": { transform: "rotate(360deg)" },
+        },
       },
     },
     fontFamily: {
@@ -78,6 +82,7 @@ module.exports = {
     animation: {
       "accordion-down": "accordion-down 0.2s ease-out",
       "accordion-up": "accordion-up 0.2s ease-out",
+      spin: "animate-spin 1s linear infinite",
     },
     linearBorderGradients: () => ({
       colors: {

@@ -5,7 +5,7 @@ import { type NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
 
-import { RealButton } from "@/components";
+import { LoadingSpinner, RealButton } from "@/components";
 import { CreatePostForm } from "@/ui/";
 
 import { RouterOutputs, api } from "../utils/api";
@@ -17,13 +17,18 @@ dayjs.extend(relativeTime);
 const PostView = ({ author, post }: PostWithAuthor) => {
   return (
     <div className="bg-[#0C1222] text-white w-[30rem] p-4 rounded-2xl flex">
-      <Image
-        alt="profile pic"
-        src={author.profileImageUrl}
-        className="mr-2 rounded-full"
-        width={50}
-        height={50}
-      />
+      {author.profileImageUrl ? (
+        <Image
+          alt="profile pic"
+          src={author.profileImageUrl}
+          className="mr-2 rounded-full"
+          width={56}
+          height={56}
+        />
+      ) : (
+        <LoadingSpinner />
+      )}
+
       <div className="flex flex-col">
         <div className="flex text-sm opacity-75">
           <p className="mr-1">{`@${author.username}`}</p>
@@ -36,17 +41,29 @@ const PostView = ({ author, post }: PostWithAuthor) => {
   );
 };
 
-const Home: NextPage = () => {
-  const user = useUser();
+export const Feed = () => {
   const { data, isLoading } = api.posts.getAll.useQuery();
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
+  return (
+    <div className="flex flex-col items-center justify-center mt-12 space-y-2">
+      {isLoading ? (
+        <LoadingSpinner />
+      ) : (
+        <>
+          {data?.map(fullPost => (
+            <PostView key={fullPost.post.id} {...fullPost} />
+          ))}
+        </>
+      )}
+    </div>
+  );
+};
 
-  if (!data) {
-    return <div>Something went wrong</div>;
-  }
+const Home: NextPage = () => {
+  // Start fetching asap
+  api.posts.getAll.useQuery();
+
+  const { isSignedIn } = useUser();
 
   return (
     <>
@@ -60,7 +77,7 @@ const Home: NextPage = () => {
           <div className="mr-64">
             <h1 className="text-4xl font-bold text-white">Sharp</h1>
           </div>
-          {user.isSignedIn ? (
+          {isSignedIn ? (
             <UserButton />
           ) : (
             <SignInButton>
@@ -71,11 +88,7 @@ const Home: NextPage = () => {
         <div className="flex justify-center mt-12">
           <CreatePostForm />
         </div>
-        <div className="flex flex-col items-center justify-center mt-12 space-y-2">
-          {data.map(fullPost => (
-            <PostView key={fullPost.post.id} {...fullPost} />
-          ))}
-        </div>
+        <Feed />
       </main>
     </>
   );

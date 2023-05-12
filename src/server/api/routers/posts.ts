@@ -10,7 +10,7 @@ const filterUserForClient = ({ id, username, profileImageUrl }: User) => {
 
 export const postsRouter = createTRPCRouter({
   getAll: publicProcedure.query(async ({ ctx }) => {
-    const posts = await ctx.prisma.post.findMany();
+    const posts = await ctx.prisma.post.findMany({ orderBy: { createdAt: "desc" } });
 
     const users = (
       await clerkClient.users.getUserList({

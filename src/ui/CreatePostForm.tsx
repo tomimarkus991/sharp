@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useState } from "react";
 
 import { YupSchemas } from "@/app-constants";
-import { FormikInput } from "@/components";
+import { FormikInput, LoadingSpinner } from "@/components";
 
 interface FormValues {
   title: string;
@@ -14,8 +14,6 @@ export const CreatePostForm = () => {
   const [initialValues] = useState<FormValues>({
     title: "",
   });
-
-  if (!user) return null;
 
   return (
     <Formik
@@ -39,13 +37,18 @@ export const CreatePostForm = () => {
         return (
           <Form className="flex flex-col">
             <div className="flex items-center justify-start mb-2">
-              <Image
-                alt="profile pic"
-                src={user?.profileImageUrl}
-                className="rounded-full"
-                width={50}
-                height={50}
-              />
+              {user ? (
+                <Image
+                  alt="pic"
+                  src={user?.profileImageUrl || ""}
+                  className="rounded-full"
+                  width={56}
+                  height={56}
+                />
+              ) : (
+                <LoadingSpinner />
+              )}
+
               <FormikInput
                 name="title"
                 variant="ghost"
