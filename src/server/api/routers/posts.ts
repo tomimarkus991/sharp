@@ -14,7 +14,7 @@ const filterUserForClient = ({ id, username, profileImageUrl }: User) => {
 // Create a rate limiter that allows 3 requests per minute
 const rateLimit = new Ratelimit({
   redis: Redis.fromEnv(),
-  limiter: Ratelimit.slidingWindow(3, "1 m"),
+  limiter: Ratelimit.slidingWindow(1, "1 m"),
   analytics: true,
 });
 

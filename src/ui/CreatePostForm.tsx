@@ -3,6 +3,7 @@ import { useUser } from "@clerk/nextjs";
 import { Form, Formik } from "formik";
 import Image from "next/image";
 import { useState } from "react";
+import toast from "react-hot-toast";
 import { toFormikValidationSchema } from "zod-formik-adapter";
 
 import { FormikInput, LoadingSpinner } from "@/components";
@@ -30,6 +31,14 @@ export const CreatePostForm = () => {
     onSuccess: () => {
       void ctx.posts.getAll.invalidate();
     },
+    onError: e => {
+      const errorMessage = e.data?.zodError?.fieldErrors.content;
+      if (errorMessage && errorMessage[0]) {
+        toast.error(errorMessage[0]);
+      } else {
+        toast.error("Failed to post! Please try again later.");
+      }
+    },
   });
 
   return (
@@ -42,7 +51,10 @@ export const CreatePostForm = () => {
 
         mutate({ content });
 
-        setErrors({ content: (error as any)?.data?.zodError?.fieldErrors.content[0] });
+        const errorMessage = error?.data?.zodError?.fieldErrors.content;
+        if (errorMessage && errorMessage[0]) {
+          setErrors({ content: errorMessage[0] });
+        }
 
         if (!error) {
           resetForm();
