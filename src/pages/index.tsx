@@ -1,72 +1,12 @@
 import { SignInButton, UserButton, useUser } from "@clerk/nextjs";
-import dayjs from "dayjs";
-import relativeTime from "dayjs/plugin/relativeTime";
 import { type NextPage } from "next";
 import Head from "next/head";
-import Image from "next/image";
-import Link from "next/link";
 
-import { LoadingSpinner, RealButton } from "@/components";
+import { RealButton } from "@/components";
 import { CreatePostForm } from "@/ui/";
 
-import { RouterOutputs, api } from "../utils/api";
-
-type PostWithAuthor = RouterOutputs["posts"]["getAll"][number];
-
-dayjs.extend(relativeTime);
-
-const PostView = ({ author, post }: PostWithAuthor) => {
-  return (
-    <div className="bg-[#0C1222] text-white w-[30rem] p-4 mr-1 rounded-2xl flex">
-      {author.profileImageUrl ? (
-        <Link href={author.username}>
-          <Image
-            alt="profile pic"
-            src={author.profileImageUrl}
-            className="mr-2 rounded-full"
-            width={56}
-            height={56}
-          />
-        </Link>
-      ) : (
-        <LoadingSpinner />
-      )}
-
-      <div className="flex flex-col">
-        <div className="flex text-sm opacity-75">
-          <Link href={author.username}>
-            <p className="mr-1">{author.username}</p>
-          </Link>
-          <Link href={`post/${post.id}`}>
-            <p className="">{dayjs(post.createdAt).fromNow()}</p>
-          </Link>
-        </div>
-
-        <Link href={`post/${post.id}`}>
-          <h1 className="text-2xl">{post.content}</h1>
-        </Link>
-      </div>
-    </div>
-  );
-};
-
-export const Feed = () => {
-  const { data, isLoading } = api.posts.getAll.useQuery();
-
-  return (
-    <div className="flex grow flex-col mx-auto overflow-y-scroll items-center space-y-2 py-2 scrollbar-overflow">
-      {isLoading ? (
-        <LoadingSpinner />
-      ) : (
-        <>
-          {data?.map(fullPost => (
-            <PostView key={fullPost.post.id} {...fullPost} />
-          ))}
-        </>
-      )}
-    </div>
-  );
-};
+import { Feed } from "../components/Feed";
+import { api } from "../utils/api";
 
 const Home: NextPage = () => {
   // Start fetching asap
