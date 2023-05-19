@@ -1,7 +1,7 @@
-import { string, object } from "yup";
+import { z } from "zod";
 
-const CreatePost = object().shape({
-  title: string().min(3).required(),
+const CreatePost = z.object({
+  content: z.string().emoji("Only emojis are allowed").min(1).max(280),
 });
 
 export const YupSchemas = {

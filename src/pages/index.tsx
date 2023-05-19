@@ -35,7 +35,7 @@ const PostView = ({ author, post }: PostWithAuthor) => {
           <p className="">{dayjs(post.createdAt).fromNow()}</p>
         </div>
 
-        <h1 className="text-2xl">{post.title}</h1>
+        <h1 className="text-2xl">{post.content}</h1>
       </div>
     </div>
   );

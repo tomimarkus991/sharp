@@ -5,6 +5,8 @@ import { ReactNode, forwardRef } from "react";
 
 import { cn } from "@/utils";
 
+import { InputErrorText } from "./InputErrorText";
+
 const formikInputVariants = cva(["placeholder:text-stone-500 relative placeholder:text-base"], {
   // regular --> hover --> active --> dark --> focus
   variants: {
@@ -56,7 +58,7 @@ export const FormikInput = forwardRef<HTMLInputElement, FormikInputProps>(
     },
     ref
   ) => {
-    const [field, { error }] = useField(name);
+    const [field, { error, touched }] = useField(name);
 
     return (
       <div>
@@ -95,7 +97,7 @@ export const FormikInput = forwardRef<HTMLInputElement, FormikInputProps>(
             </div>
           )}
         </div>
-        {/* <InputErrorText className="mt-1 ml-1" touched={touched} error={error} /> */}
+        <InputErrorText className="mt-1 ml-1" touched={touched} error={error} />
       </div>
     );
   }

@@ -1,34 +1,52 @@
+/* eslint-disable no-void */
 import { useUser } from "@clerk/nextjs";
 import { Form, Formik } from "formik";
 import Image from "next/image";
 import { useState } from "react";
+import { toFormikValidationSchema } from "zod-formik-adapter";
 
-import { YupSchemas } from "@/app-constants";
 import { FormikInput, LoadingSpinner } from "@/components";
 
+import { YupSchemas } from "../app-constants";
+import { cn } from "../utils";
+import { api } from "../utils/api";
+
 interface FormValues {
-  title: string;
+  content: string;
 }
 export const CreatePostForm = () => {
   const { user } = useUser();
   const [initialValues] = useState<FormValues>({
-    title: "",
+    content: "",
+  });
+
+  const ctx = api.useContext();
+
+  const {
+    mutate,
+    error,
+    isLoading: isPosting,
+  } = api.posts.create.useMutation({
+    onSuccess: () => {
+      void ctx.posts.getAll.invalidate();
+    },
   });
 
   return (
     <Formik
       initialValues={initialValues}
-      validationSchema={YupSchemas.CreatePost}
+      validationSchema={toFormikValidationSchema(YupSchemas.CreatePost)}
       validateOnChange={true}
-      onSubmit={async (_, { setSubmitting, resetForm }) => {
+      onSubmit={async ({ content }, { setSubmitting, resetForm, setErrors }) => {
         setSubmitting(true);
 
-        // he sends to Nüke
-        // const sentFrom = new Sender(email, name);
+        mutate({ content });
 
-        // const recipients = [new Recipient("tomimarkusalber@gmail.com", "Nüke")];
+        setErrors({ content: (error as any)?.data?.zodError?.fieldErrors.content[0] });
 
-        resetForm();
+        if (!error) {
+          resetForm();
+        }
 
         setSubmitting(false);
       }}
@@ -50,10 +68,14 @@ export const CreatePostForm = () => {
               )}
 
               <FormikInput
-                name="title"
+                name="content"
                 variant="ghost"
                 placeholder="Type something!"
-                className="grow placeholder:text-[#d2d2d2]"
+                disabled={isPosting}
+                className={cn(
+                  "grow placeholder:text-[#d2d2d2]",
+                  isPosting && "cursor-not-allowed opacity-60"
+                )}
               />
               {/* <p className="mb-2 text-[#f3f2f0] font-semibold text-lg">{user?.username}</p> */}
             </div>
