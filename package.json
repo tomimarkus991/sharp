@@ -10,6 +10,7 @@
     "lint": "next lint",
     "start": "next start",
     "prisma:push": "npx prisma db push",
+    "typecheck": "tsc --noEmit",
     "prisma:dev": "npx prisma studio"
   },
   "dependencies": {

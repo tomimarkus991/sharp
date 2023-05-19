@@ -1,0 +1,29 @@
+name: CI
+
+on: [push, pull_request]
+
+env:
+  DATABASE_URL: "https://fake.com"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Install Dependencies
+        run: yarn
+
+      - name: Typecheck
+        run: yarn typecheck
+
+      - name: Lint fix
+        run: yarn lint:fix
+
+      - name: Lint
+        run: yarn lint
+
+      - name: Print Environment Variable
+        run: echo $MY_ENV_VAR
