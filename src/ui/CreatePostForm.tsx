@@ -6,7 +6,7 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import { toFormikValidationSchema } from "zod-formik-adapter";
 
-import { FormikInput, LoadingSpinner } from "@/components";
+import { FormikInput, LoadingSpinner, RealButton } from "@/components";
 
 import { YupSchemas } from "../app-constants";
 import { cn } from "../utils";
@@ -63,7 +63,7 @@ export const CreatePostForm = () => {
         setSubmitting(false);
       }}
     >
-      {() => {
+      {({ submitForm }) => {
         return (
           <Form className="flex flex-col">
             <div className="flex items-center justify-start mb-2">
@@ -82,14 +82,20 @@ export const CreatePostForm = () => {
               <FormikInput
                 name="content"
                 variant="ghost"
-                placeholder="Type something!"
+                placeholder="Type some emojis!"
                 disabled={isPosting}
                 className={cn(
                   "grow placeholder:text-[#d2d2d2]",
                   isPosting && "cursor-not-allowed opacity-60"
                 )}
+                inputAfterfix={
+                  <>
+                    <RealButton size="xs" onClick={submitForm}>
+                      {isPosting ? <LoadingSpinner size={24} /> : "Send"}
+                    </RealButton>
+                  </>
+                }
               />
-              {/* <p className="mb-2 text-[#f3f2f0] font-semibold text-lg">{user?.username}</p> */}
             </div>
           </Form>
         );

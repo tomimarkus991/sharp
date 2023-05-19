@@ -24,7 +24,7 @@ const formikInputVariants = cva(["placeholder:text-stone-500 relative placeholde
     // size is already defined on input element
     inputSize: {
       sm: "py-2 px-4 text-md rounded-xl",
-      md: "py-2 px-4 text-lg font-semibold rounded-xl",
+      md: "p-4 text-lg font-semibold rounded-xl",
       lg: "py-3 px-4 text-xl font-semibold rounded-xl",
     },
   },
@@ -83,7 +83,7 @@ export const FormikInput = forwardRef<HTMLInputElement, FormikInputProps>(
               formikInputVariants({ variant, inputSize, className }),
               error && "border-2 border-red-400 outline-none caret-red-400 focus:border-red-500",
               inputPrefix && "pl-8",
-              inputAfterfix && "pr-9"
+              inputAfterfix && "pr-20"
             )}
             autoFocus={false}
             autoComplete="off"

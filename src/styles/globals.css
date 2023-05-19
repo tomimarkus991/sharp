@@ -25,8 +25,14 @@ input[type="number"] {
   -moz-appearance: textfield;
 }
 
-@later base {
+@layer base {
   p {
     @apply text-[#f3f2f0];
+  }
+}
+
+@layer components {
+  .scrollbar-overflow {
+    @apply overflow-scroll scrollbar-thumb-gray-600 hover:scrollbar-thumb-gray-700 scrollbar-track-transparent scrollbar-thin scrollbar-thumb-rounded-full;
   }
 }

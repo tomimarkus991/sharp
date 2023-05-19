@@ -54,6 +54,7 @@ export const realButtonVariants = cva(
       variant: realButtonVariantColors,
       size: {
         icon: `py-2 px-3 rounded-lg max-w-fit`,
+        xs: `py-1 px-3 rounded-2xl w-16 flex justify-center`,
         sm: `py-2 px-10 text-sm rounded-2xl`,
         md: `py-2 px-14 text-sm lg:text-md rounded-2xl`,
         lg: `py-3 px-18 text-lg rounded-2xl`,
