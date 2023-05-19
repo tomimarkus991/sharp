@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
-import { Link } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 import { RouterOutputs } from "../utils/api";
 
@@ -29,17 +29,11 @@ export const Post = ({ author, post }: PostWithAuthor) => {
 
       <div className="flex flex-col">
         <div className="flex text-sm opacity-75">
-          <Link href={author.username}>
-            <p className="mr-1">{author.username}</p>
-          </Link>
-          <Link href={`post/${post.id}`}>
-            <p className="">{dayjs(post.createdAt).fromNow()}</p>
-          </Link>
+          <p className="mr-1">{author.username}</p>
+          <p className="">{dayjs(post.createdAt).fromNow()}</p>
         </div>
 
-        <Link href={`post/${post.id}`}>
-          <h1 className="text-2xl">{post.content}</h1>
-        </Link>
+        <h1 className="text-2xl">{post.content}</h1>
       </div>
     </div>
   );
