@@ -8,7 +8,7 @@ import { toFormikValidationSchema } from "zod-formik-adapter";
 
 import { FormikInput, LoadingSpinner, RealButton } from "@/components";
 
-import { YupSchemas } from "../app-constants";
+import { ZodSchemas } from "../app-constants";
 import { cn } from "../utils";
 import { api } from "../utils/api";
 
@@ -44,7 +44,7 @@ export const CreatePostForm = () => {
   return (
     <Formik
       initialValues={initialValues}
-      validationSchema={toFormikValidationSchema(YupSchemas.CreatePost)}
+      validationSchema={toFormikValidationSchema(ZodSchemas.CreatePost)}
       validateOnChange={true}
       onSubmit={async ({ content }, { setSubmitting, resetForm, setErrors }) => {
         setSubmitting(true);

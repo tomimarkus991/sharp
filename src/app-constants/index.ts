@@ -1,1 +1,1 @@
-export * from "./yupSchemas";
+export * from "./zodSchemas";

@@ -4,6 +4,6 @@ const CreatePost = z.object({
   content: z.string().emoji("Only emojis are allowed").min(1).max(280),
 });
 
-export const YupSchemas = {
+export const ZodSchemas = {
   CreatePost,
 };
